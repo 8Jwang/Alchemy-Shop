@@ -9,14 +9,14 @@ void baseIngredientTest()
 {
     BaseIngredient b1("Life", 0);
     BaseIngredient b1("Death", 1);
-    BaseIngredient b1("Life", 2);
-    BaseIngredient b1("Life", 3);
-    BaseIngredient b1("Life", 4);
-    BaseIngredient b1("Life", 5);
-    BaseIngredient b1("Life", 6);
-    BaseIngredient b1("Life", 7);
-    BaseIngredient b1("Life", 8);
-    BaseIngredient b1("Life", 9);
+    BaseIngredient b1("Wood", 2);
+    BaseIngredient b1("Water", 3);
+    BaseIngredient b1("Fire", 4);
+    BaseIngredient b1("Love", 5);
+    BaseIngredient b1("Electricity", 6);
+    BaseIngredient b1("Air", 7);
+    BaseIngredient b1("Cupcake", 8);
+    BaseIngredient b1("Toothbrush", 9);
 }
 
 void potionTest() {
