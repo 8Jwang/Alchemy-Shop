@@ -7,16 +7,16 @@ using namespace std;
 
 void baseIngredientTest()
 {
-    BaseIngredient b0("Life", 0);
-    BaseIngredient b1("Death", 1);
-    BaseIngredient b2("Wood", 2);
-    BaseIngredient b3("Water", 3);
-    BaseIngredient b4("Fire", 4);
-    BaseIngredient b5("Love", 5);
-    BaseIngredient b6("Electricity", 6);
-    BaseIngredient b7("Air", 7);
-    BaseIngredient b8("Cupcake", 8);
-    BaseIngredient b9("Toothbrush", 9);
+    BaseIngredient b0("Life");
+    BaseIngredient b1("Death");
+    BaseIngredient b2("Wood");
+    BaseIngredient b3("Water");
+    BaseIngredient b4("Fire");
+    BaseIngredient b5("Love");
+    BaseIngredient b6("Electricity");
+    BaseIngredient b7("Air");
+    BaseIngredient b8("Cupcake");
+    BaseIngredient b9("Toothbrush");
 }
 
 void potionTest() {
