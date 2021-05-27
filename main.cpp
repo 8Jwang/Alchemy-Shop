@@ -39,6 +39,7 @@ int main() {
     c3.setPhone(ph);
     cout << c3.getPhone() << endl;
     cout << "hello" << endl;
+    potionTest();
 
     return 0;
 }
