@@ -1,4 +1,5 @@
 #include "Customer.h"
+#include <sstream>
 
 Customer::Customer() {
 	name = "Bob";
@@ -56,7 +57,17 @@ void Customer::setIsMad(bool m) {
 	isMad = m;
 }
 
-//
-//string Customer::toString() {
-//	return name + " requests order #" + request + " (contact at " + phone + ")";
-//}
+
+string Customer::toString() {
+    stringstream ss;
+
+    ss << name;
+    ss << " requests order # ";
+    ss << request;
+    ss << " (contact at ";
+    ss << phone;
+    ss << ")";
+
+
+    return ss.str();
+}
