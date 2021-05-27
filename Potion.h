@@ -25,6 +25,6 @@ public:
     bool getIsMade();
     int getId();
     string toString();
-}
+};
 
 #endif

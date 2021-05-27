@@ -14,9 +14,8 @@ private:
 
 public:
 	BaseIngredient();
-    BaseIngredient(string, int);
-    string setName();
-    int setId();
+    BaseIngredient(string);
+    void setName(string n);
     int getId();
     string getName();
 

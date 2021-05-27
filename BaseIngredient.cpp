@@ -3,25 +3,19 @@
 BaseIngredient::BaseIngredient()
 {
     name = "Joe";
-    id = 0;
-    private:
-        static int count;
+    id = count++;
+
 }
 
 int BaseIngredient::count = 0;
 
-BaseIngredient(string n, int i)
+BaseIngredient::BaseIngredient(string n)
 {
-    setName(n);
-    setId(i);
+    name = n;
 }
 
 void BaseIngredient::setName(string n) {
 	name = n;
-}
-
-void BaseIngredient::setId(int i) {
-	id = i;
 }
 
 int BaseIngredient::getId()

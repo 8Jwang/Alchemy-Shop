@@ -15,9 +15,9 @@ private:
 
 public:
 	Customer();
-	Customer(string, int, int, bool);
+	Customer(string, string, int, bool);
 	string getName();
-	int getPhone();
+	string getPhone();
 	int getRequest();
 	bool getIsMad();
 	void setName(string);

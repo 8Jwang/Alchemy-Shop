@@ -56,6 +56,7 @@ void Customer::setIsMad(bool m) {
 	isMad = m;
 }
 
-string Customer::toString() {
-	return name + " requests order #" + request + " (contact at " + phone + ")";
-}
+//
+//string Customer::toString() {
+//	return name + " requests order #" + request + " (contact at " + phone + ")";
+//}
