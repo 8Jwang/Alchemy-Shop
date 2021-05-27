@@ -9,7 +9,7 @@ Potion::Potion() {
     ing2 = -1;
     name = "empty";
     id = count++;
-    isMade = False;
+    isMade = false;
 }
 
 int Potion::count = 0;
@@ -58,12 +58,12 @@ bool Potion::getIsMade() {
 }
 
 int Potion::getId() {
-    return getId;
+    return id;
 }
 
 string Potion::toString() {
-    stringsteam ss;
-    
+    stringstream ss;
+
     ss << "name: ";
     ss << name;
     ss << "; ingredient1: ";

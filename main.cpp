@@ -1,26 +1,22 @@
-// DO WE NEED DESTRUCTORS??? POINTERS?? TT
-#include "Potion.h"
-#include "BaseIngredient.h"
-#include "Customer.h"
-
+//// DO WE NEED DESTRUCTORS??? POINTERS?? TT
+//#include "Potion.h"
+//#include "BaseIngredient.h"
+//#include "Customer.h"
+#include <iostream>
 using namespace std;
 
 void baseIngredientTest()
 {
     BaseIngredient b0("Life", 0);
     BaseIngredient b1("Death", 1);
-    BaseIngredient b2("Wood", 2);
-    BaseIngredient b3("Water", 3);
-    BaseIngredient b4("Fire", 4);
-    BaseIngredient b5("Love", 5);
-    BaseIngredient b6("Electricity", 6);
-    BaseIngredient b7("Air", 7);
-    BaseIngredient b8("Cupcake", 8);
-    BaseIngredient b9("Toothbrush", 9);
-    cout << b0.getName() << endl;
-    cout << b0.getId() << endl;
-    cout << b1.getName() << endl;
-    cout << b1.getId() << endl;
+    BaseIngredient b1("Wood", 2);
+    BaseIngredient b1("Water", 3);
+    BaseIngredient b1("Fire", 4);
+    BaseIngredient b1("Love", 5);
+    BaseIngredient b1("Electricity", 6);
+    BaseIngredient b1("Air", 7);
+    BaseIngredient b1("Cupcake", 8);
+    BaseIngredient b1("Toothbrush", 9);
 }
 
 void potionTest() {
@@ -42,6 +38,7 @@ int main() {
     string ph = "111-111-1111";
     c3.setPhone(ph);
     cout << c3.getPhone() << endl;
+    cout << "hello" << endl;
     
     return 0;
 }
