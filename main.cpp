@@ -1,7 +1,7 @@
 //// DO WE NEED DESTRUCTORS??? POINTERS?? TT
-//#include "Potion.h"
-//#include "BaseIngredient.h"
-//#include "Customer.h"
+#include "Potion.h"
+#include "BaseIngredient.h"
+#include "Customer.h"
 #include <iostream>
 using namespace std;
 
