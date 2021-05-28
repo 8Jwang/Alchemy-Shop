@@ -8,7 +8,6 @@ Potion::Potion() {
     ing1 = -1;
     ing2 = -1;
     name = "empty";
-    id = count++;
     isMade = false;
 }
 
@@ -19,6 +18,7 @@ Potion::Potion(int ing1, int ing2, string name, bool isMade) {
     this -> ing2 = ing2;
     this -> name = name;
     this -> isMade = isMade;
+    id = count++;
 }
 
 void Potion::setBaseIngredient1(int ing1) {
@@ -70,7 +70,7 @@ string Potion::toString() {
     ss << ing1;
     ss << "; ingredient2: ";
     ss << ing2;
-    ss << "; id: ";
+    ss << "; order number: ";
     ss << id;
     ss << "; has been made?: ";
     ss << isMade;

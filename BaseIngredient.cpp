@@ -1,9 +1,10 @@
 #include "BaseIngredient.h"
+#include <sstream>
+
 
 BaseIngredient::BaseIngredient()
 {
     name = "Joe";
-    id = count++;
 
 }
 
@@ -12,6 +13,7 @@ int BaseIngredient::count = 0;
 BaseIngredient::BaseIngredient(string n)
 {
     name = n;
+    id = count++;
 }
 
 void BaseIngredient::setName(string n) {
@@ -26,4 +28,15 @@ int BaseIngredient::getId()
 string BaseIngredient::getName()
 {
     return name;
+}
+
+string BaseIngredient::toString() {
+    stringstream ss;
+
+    ss << "name: ";
+    ss << name;
+    ss << "; id: ";
+    ss << id;
+
+    return ss.str();
 }

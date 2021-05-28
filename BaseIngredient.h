@@ -18,6 +18,7 @@ public:
     void setName(string n);
     int getId();
     string getName();
+    string toString();
 
 };
 
