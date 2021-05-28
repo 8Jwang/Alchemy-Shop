@@ -3,6 +3,7 @@
 #include "BaseIngredient.h"
 #include "Customer.h"
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 void baseIngredientTest()
@@ -28,18 +29,29 @@ void potionTest() {
     cout << p2.toString() << endl;
 }
 
+void genCustomers() {
+    int random = rand() % 10;
+    Customer c0("Bob", "613-598-1283", random, false);
+    Customer c1("Sam", "123-456-7891", random, false);
+    Customer c2();
+    Customer c3();
+    Customer c4();
+    Customer c5();
+    Customer c6();
+    Customer c7();
+    Customer c8();
+    Customer c9();
+
+
+
+
+
+}
+
 int main() {
-    Customer c1;
-    Customer c2("Dude", "613-123-4566", 2, true);
-    Customer c3("Name", "1234567-8999", 10, false);
-    cout << c1.toString() << endl;
-    cout << c2.toString() << endl;
-    cout << c3.toString() << endl;
-    string ph = "111-111-1111";
-    c3.setPhone(ph);
-    cout << c3.getPhone() << endl;
-    cout << "hello" << endl;
-    potionTest();
+    srand(time(0));
+
+    //potionTest();
 
     return 0;
 }
