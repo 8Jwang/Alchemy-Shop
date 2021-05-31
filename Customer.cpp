@@ -6,13 +6,16 @@ Customer::Customer() {
 	phone = "000-000-0000";
 	request = 0;
 	isMad = false;
+	isMade = false;
 }
+int Customer::count = 0;
 
 Customer::Customer(string n, string p, int r, bool m) {
 	setName(n);
 	setPhone(p);
 	setRequest(r);
 	setIsMad(m);
+	id = count++;
 }
 
 string Customer::getName() {
@@ -29,6 +32,14 @@ int Customer::getRequest() {
 
 bool Customer::getIsMad() {
 	return isMad;
+}
+
+bool Customer::getIsMade() {
+    return isMade;
+}
+
+int Customer::getId() {
+    return id;
 }
 
 void Customer::setName(string n) {
@@ -56,6 +67,13 @@ void Customer::setRequest(int r) {
 void Customer::setIsMad(bool m) {
 	isMad = m;
 }
+
+void Customer::setIsMade(bool isMade) {
+    this -> isMade = isMade;
+}
+
+
+
 
 
 string Customer::toString() {

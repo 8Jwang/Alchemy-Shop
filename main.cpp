@@ -4,10 +4,13 @@
 #include "Customer.h"
 #include <iostream>
 #include <time.h>
+
 using namespace std;
 
+
 // functions that generate and returns the array
-Customer * genCustomers(Customer customerList[]) {
+// todo: do we uh... need to delete and like reallocate space or?
+Customer *genCustomers(Customer customerList[]) {
     Customer c0("Bob", "333-666-9999", rand() % 10, false);
     Customer c1("Arys Borderlands", "123-456-7891", rand() % 10, false);
     Customer c2("Chibueze Teaman", "545-777-6868", rand() % 10, false);
@@ -33,7 +36,7 @@ Customer * genCustomers(Customer customerList[]) {
     return customerList;
 }
 
-Potion * genPotions(Potion potionList[]) {
+Potion *genPotions(Potion potionList[]) {
     Potion p0(0, 3, "Fish potion", false);
     Potion p1(0, 1, "Aging potion", false);
     Potion p2(1, 8, "Poison potion", false);
@@ -59,7 +62,7 @@ Potion * genPotions(Potion potionList[]) {
     return potionList;
 }
 
-BaseIngredient * genBaseIngredients(BaseIngredient baseIngredientList[]) {
+BaseIngredient *genBaseIngredients(BaseIngredient baseIngredientList[]) {
     BaseIngredient b0("Life");
     BaseIngredient b1("Death");
     BaseIngredient b2("Wood");
@@ -86,8 +89,73 @@ BaseIngredient * genBaseIngredients(BaseIngredient baseIngredientList[]) {
 
 }
 
+//checks if ingredients combine to make potion (and what potion)
+int makePotion(int ingredient1, int ingredient2, Potion potionList[]) {
+    for (int i = 0; i < 10; i++) {
+        if ((ingredient1 == potionList[i].getBaseIngredient1() && ingredient2 == potionList[i].getBaseIngredient2()) ||
+            (ingredient1 == potionList[i].getBaseIngredient2() && ingredient2 == potionList[i].getBaseIngredient1())) {
+            return potionList[i].getId();
+        }
+    }
+    return -1;
+}
+
+//checks if potion made is the right potion that the customer ordered
+int giveCustomer(int potion, int customer, Customer customerOrderingList[], int points, Customer customerList[],
+                 int available[]) {
+    if (customerOrderingList[customer].getRequest() == potion) {
+        cout << "you have successfully given the potion to the customer!" << endl;
+        //customerOrderingList[customer].setIsMade(true);
+        points++;
+        cout << "You now have " << points << " points!" << endl;
+
+        int x;
+        int y;
+        do {
+            y = rand() % 10;
+            x = available[y];
+            available[y] = -1;
+        } while (x == -1);
+
+        customerOrderingList[customer] = customerList[x];
+        available[customerOrderingList[customer].getId()] = customerOrderingList[customer].getId();
+
+        cout << "A new customer arrived! Here is your customer list: " << endl;
+        for (int i = 0; i < 3; i++) {
+            cout << i << ". " << customerOrderingList[i].toString() << endl;
+        }
+    } else {
+        cout << "The customer was unhappy with the potion they received. You lost 1 point." << endl;
+        customerOrderingList[customer].setIsMad(true);
+        points--;
+        cout << "You now have " << points << " points!" << endl;
+    }
+
+    return points;
+}
+
+// placing customers from the customer list into the ordering list
+Customer *generateCustomerOrderingList(Customer customerOrderingList[], Customer customerList[], int available[]) {
+    for (int i = 0; i < 3; i++) {
+        int x;
+        int y;
+        do {
+            y = rand() % 10;
+            x = available[y];
+            available[y] = -1;
+        } while (x == -1);
+
+        customerOrderingList[i] = customerList[x];
+        cout << i << ". " << customerOrderingList[i].toString() << endl;
+    }
+    return customerOrderingList;
+}
+
+
 int main() {
     srand(time(0));
+
+    int points = 3;
 
     // initializing arrays
     Customer customerList[10];
@@ -102,23 +170,51 @@ int main() {
     //getting three different customers
     Customer customerOrderingList[3];
     int available[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    generateCustomerOrderingList(customerOrderingList, customerList, available);
 
-    //checking if customer is already in the queue
-    for(int i = 0; i < 3; i++) {
-        int x;
-        int y;
-        do {
-            y = rand() % 10;
-            x = available[y];
-            available[y] = -1;
-        } while (x == -1);
 
-        customerOrderingList[i] = customerList[x];
-        cout << customerOrderingList[i].toString() << endl;
+//    for (int i = 0; i < 10; i++) {
+//        cout << available[i] << " ";
+//    }
+//
+//    cout << endl;
+
+    int ingredient1;
+    int ingredient2;
+    int myPotion;
+    do {
+        cout << "pls pick two ingredients" << endl;
+        cin >> ingredient1 >> ingredient2;
+        cout << ingredient1 << " " << ingredient2 << endl;
+        myPotion = makePotion(ingredient1, ingredient2, potionList);
+        if (myPotion == -1) {
+            cout << "Your combination did not make a potion! Workspace has been reset" << endl;
+            continue;
+        } else {
+            int customer;
+            cout << "You made potion #" << myPotion
+                 << "! If you'd like to trash this potion, please enter '-1'. Otherwise, please enter which customer you'd like to give it to (0, 1 or 2)."
+                 << endl;
+            cin >> customer;
+            if (customer == -1) {
+                continue;
+            } else {
+                points = giveCustomer(myPotion, customer, customerOrderingList, points, customerList, available);
+            }
+        }
+    } while (points > 0 && points < 10);
+
+    if (points == 0) {
+        cout << "Sorry, you ran out of points. Better luck next time!" << endl;
+        //returns the user to the title screen
+    } else {
+        cout << "Great job! Your alchemy shop has a stellar reputation. You win!" << endl;
+        //returns the user to the title screen
     }
 
+
     //listing potions and ingredients
-    cout << "Potions: " << endl;
+    /* cout << "Potions: " << endl;
     for(int i = 0; i < 10; i++) {
         cout << potionList[i].toString() << endl;
     }
@@ -127,6 +223,8 @@ int main() {
     for(int i = 0; i < 10; i++) {
         cout << baseIngredientList[i].toString() << endl;
     }
+     */
+
 
     //potionTest();
 

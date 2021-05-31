@@ -11,7 +11,10 @@ private:
 	string name;
 	string phone;
 	int request;
+	int id;
 	bool isMad;
+	bool isMade;
+	static int count;
 
 public:
 	Customer();
@@ -20,10 +23,13 @@ public:
 	string getPhone();
 	int getRequest();
 	bool getIsMad();
+	int getId();
 	void setName(string);
 	void setPhone(string);
-	void setRequest(int);
+    void setIsMade(bool isMade);
+    void setRequest(int);
 	void setIsMad(bool);
+    bool getIsMade();
 	string toString();
 };
 
