@@ -10,11 +10,12 @@ Customer::Customer() {
 }
 int Customer::count = 0;
 
-Customer::Customer(string n, string p, int r, bool m) {
+Customer::Customer(string n, string p, int r, bool m, bool me) {
 	setName(n);
 	setPhone(p);
 	setRequest(r);
 	setIsMad(m);
+	setIsMade(me);
 	id = count++;
 }
 

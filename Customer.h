@@ -18,7 +18,7 @@ private:
 
 public:
 	Customer();
-	Customer(string, string, int, bool);
+	Customer(string, string, int, bool, bool);
 	string getName();
 	string getPhone();
 	int getRequest();
