@@ -30,6 +30,7 @@ public:
     void setRequest(int);
 	void setIsMad(bool);
     bool getIsMade();
+    void setId(int);
 	string toString();
 };
 

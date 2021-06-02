@@ -5,6 +5,7 @@
 #include <iostream>
 #include <time.h>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -97,6 +98,7 @@ void savingInformation(int points, Customer customerOrderingList[]) {
         MyFile << customerOrderingList[i].getName() << "\n";
         MyFile << customerOrderingList[i].getPhone() << "\n";
         MyFile << customerOrderingList[i].getRequest() << "\n";
+        MyFile << customerOrderingList[i].getId() << "\n";
     }
     MyFile << points << "\n";
     MyFile.close();
@@ -111,6 +113,35 @@ void flex(Customer customerOrderingList[], int index) {
     outfile << customerOrderingList[index].getRequest() << "\n";
     outfile << customerOrderingList[index].getIsMad() << "\n";
     outfile << "\n";
+}
+
+//replacing customer queue with saved information
+int getInformation(Customer customerOrderingList[], int points, int available[]) {
+    string tempArray[13];
+    //resetting availability list in order to replace customer queue
+    for (int i=0; i < 10; i++) {
+        available[i] = i;
+    }
+    int count = 0;
+    string myText;
+    //retrieving saved information from last save and quit
+    ifstream MyReadFile("saveGame.txt");
+    while (getline (MyReadFile, myText)) {
+        tempArray[count] = myText;
+        count++;
+    }
+    //replacing existing customer queue with saved information
+    for (int i = 0; i < 3; i++) {
+        customerOrderingList[i].setName(tempArray[((3*i)+i)]);
+        customerOrderingList[i].setPhone(tempArray[((3*i)+i)+1]);
+        customerOrderingList[i].setRequest(stoi(tempArray[((3*i)+i)+2]));
+        customerOrderingList[i].setId(stoi(tempArray[((3*i)+i)+3]));
+        available[stoi(tempArray[((3*i)+i)+3])] = -1;
+    }
+    //replacing existing points with saved points
+    points = stoi(tempArray[12]);
+    return points;
+
 }
 
 //checks if ingredients combine to make potion (and what potion)
@@ -206,6 +237,28 @@ Customer *generateCustomerOrderingList(Customer customerOrderingList[], Customer
     return customerOrderingList;
 }
 
+//outputting flex list at end of game
+void outputResults() {
+    string results;
+    ifstream MyReadFile("flexList.txt");
+    while (getline (MyReadFile, results)) {
+        cout << results << endl;
+    }
+    MyReadFile.close();
+}
+
+//clear contents of flex list
+void delFlexList() {
+    fstream ofs;
+    ofs.open("flexList.txt", ios::out | ios::trunc);
+    ofs.close();
+}
+
+void delSaveGame() {
+    fstream ofs;
+    ofs.open("saveGame.txt", ios::out | ios::trunc);
+    ofs.close();
+}
 
 int main() {
 
@@ -219,7 +272,7 @@ int main() {
     BaseIngredient baseIngredientList[10];
     Potion potionList[10];
 
-    // running the functions
+    // running the functions that generate customers, ingredients, potions
     genCustomers(customerList);
     genBaseIngredients(baseIngredientList);
     genPotions(potionList);
@@ -227,7 +280,34 @@ int main() {
     //getting three different customers
     Customer customerOrderingList[3];
     int available[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    generateCustomerOrderingList(customerOrderingList, customerList, available);
+
+    ifstream read("saveGame.txt");
+    if(!read) return 0;
+    bool empty = read.peek() == EOF;
+    //cout << boolalpha << "saveGame is empty = " << empty << endl;
+
+    string reload;
+
+    if (!empty){
+        cout << "If you would like to reload your saved game, type 'reload'! If not, enter any letter!" << endl;
+        cin >> reload;
+        if (reload == "reload") {
+            points = getInformation(customerOrderingList, points, available);
+            for (int i = 0; i < 3; i++) {
+                cout << i << ". " << customerOrderingList[i].toString() << endl;
+            }
+            cout << "Current points: " << points << endl;
+
+        } else {
+            delFlexList();
+            delSaveGame();
+            generateCustomerOrderingList(customerOrderingList, customerList, available);
+        }
+    } else {
+        generateCustomerOrderingList(customerOrderingList, customerList, available);
+    }
+    //generating and outputting customer queue
+
 
 
 //    for (int i = 0; i < 10; i++) {
@@ -235,11 +315,11 @@ int main() {
 //    }
 //
 //    cout << endl;
-    //savingInformation();
 
     int ingredient1;
     int ingredient2;
     int myPotion;
+    string quit = "continue";
     do {
         cout << "pls pick two ingredients" << endl;
         cin >> ingredient1 >> ingredient2;
@@ -258,19 +338,34 @@ int main() {
                 continue;
             } else {
                 points = giveCustomer(myPotion, customer, customerOrderingList, points);
-                updateCustomerOrderingList(customerOrderingList, customerList, available);
-                savingInformation(points, customerOrderingList);
+                if (points != 0 && points != 10) {
+                    updateCustomerOrderingList(customerOrderingList, customerList, available);
+                    savingInformation(points, customerOrderingList);
+                    cout << "If you would like to quit and save, type 'quit'. Otherwise, enter anything!" << endl;
+                    cin >> quit;
+                }
 
             }
         }
-    } while (points > 0 && points < 10);
+
+    } while (points > 0 && points < 10 && quit != "quit");
 
     if (points == 0) {
         cout << "Sorry, you ran out of points. Better luck next time!" << endl;
+        delSaveGame();
+        cout << "Here is your list of past customers: " << endl;
+        outputResults();
+        delFlexList();
+        //returns the user to the title screen
+    } else if (points == 10){
+        cout << "Great job! Your alchemy shop has a stellar reputation. You win!" << endl;
+        delSaveGame();
+        cout << "Here is your flex list: " << endl;
+        outputResults();
+        delFlexList();
         //returns the user to the title screen
     } else {
-        cout << "Great job! Your alchemy shop has a stellar reputation. You win!" << endl;
-        //returns the user to the title screen
+        cout << "Your game has been saved!" << endl;
     }
 
 

@@ -73,9 +73,9 @@ void Customer::setIsMade(bool isMade) {
     this -> isMade = isMade;
 }
 
-
-
-
+void Customer::setId(int i) {
+    id = i;
+}
 
 string Customer::toString() {
     stringstream ss;
