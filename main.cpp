@@ -117,9 +117,11 @@ void flex(Customer customerOrderingList[], int index) {
 }
 
 int countLines() {
+    //initializing variables
     int numLines = 0;
     string line;
     ifstream myFile("flexList.txt");
+    //counting number of lines
     while (getline(myFile, line)) {
         ++numLines;
     }
@@ -158,7 +160,6 @@ string **getFlexList() {
     // creating a 2D array
     string **matrix;
     int numCustomers = countLines() / 5;
-    cout << numCustomers << endl;
     matrix = new string *[numCustomers];
     for (int i = 0; i < numCustomers; i++) {
         matrix[i] = new string[5];
@@ -187,23 +188,33 @@ string **getFlexList() {
 
 //sorting flex list alphabetically
 string **selectSort(string **arr, int length) {
-    //pos_max will store the index of the largest element found in the unsorted portion
     int pos_max;
-    string temp[4];
-    for (int i = length - 1; i > 0; i--) { //i is the index of end of unsorted portion
-        pos_max = 0; //assume first element is largest
+    string temp[5];
+
+    for (int i = length - 1; i > 0; i--) {
+        //setting first index as temporary largest position
+        pos_max = 0;
         for (int j = 1; j <= i; j++) {
-            if (strcmp(arr[j][0].c_str(), arr[pos_max][0].c_str()) <
-                0)//checks if current position is greater alphabetically
+            //checks if current position is greater alphabetically
+            if (strcmp(arr[j][0].c_str(), arr[pos_max][0].c_str()) < 0) {
+
                 pos_max = j; //if larger found, set new largest
+            }
         }
-        //swap element at i with largest element found in unsorted portion
-        for (int k = 0; k < 4; k++) {
+        //swapping element at i (and all the elements that are associated with it in 2d list) with largest element in unsorted section
+        for (int k = 0; k < 5; k++) {
+
             temp[k] = arr[i][k];
             arr[i][k] = arr[pos_max][k];
             arr[pos_max][k] = temp[k];
         }
 
+    }
+    //outputting order
+    for (int i = length - 1; i >= 0; i--) {
+        for (int j = 0; j < 5; j++) {
+            cout << arr[i][j] << endl;
+        }
     }
 }
 
@@ -220,18 +231,20 @@ int makePotion(int ingredient1, int ingredient2, Potion potionList[]) {
 
 //checks if potion made is the right potion that the customer ordered
 int giveCustomer(int potion, int customer, Customer customerOrderingList[], int points) {
+    //if the potion the customer ordered is the potion delivered, increase the points and set isMade to true
     if (customerOrderingList[customer].getRequest() == potion) {
         cout << "you have successfully given the potion to the customer!" << endl;
         customerOrderingList[customer].setIsMade(true);
         points++;
         cout << "You now have " << points << " points!" << endl;
-
+        //if the potion the customer ordered is not the potion delivered, decrease the points and set isMad to true
     } else {
         cout << "The customer was unhappy with the potion they received. You lost 1 point." << endl;
         customerOrderingList[customer].setIsMad(true);
         points--;
         cout << "You now have " << points << " points!" << endl;
     }
+    //update the flex list
     flex(customerOrderingList, customer);
 
     return points;
@@ -285,6 +298,7 @@ Customer *updateCustomerOrderingList(Customer customerOrderingList[], Customer c
 
 // placing customers from the customer list into the ordering list
 Customer *generateCustomerOrderingList(Customer customerOrderingList[], Customer customerList[], int available[]) {
+    //same as above, rng generator that catches if a customer is already in queue
     for (int i = 0; i < 3; i++) {
         int x;
         int y;
@@ -317,6 +331,7 @@ void delFlexList() {
     ofs.close();
 }
 
+//clear contents of save game
 void delSaveGame() {
     fstream ofs;
     ofs.open("saveGame.txt", ios::out | ios::trunc);
@@ -346,10 +361,10 @@ int main() {
     ifstream read("saveGame.txt");
     if (!read) return 0;
     bool empty = read.peek() == EOF;
-    //cout << boolalpha << "saveGame is empty = " << empty << endl;
 
     string reload;
 
+    //generating and outputting customer queue
     if (!empty) {
         cout << "If you would like to reload your saved game, type 'reload'! If not, enter any letter!" << endl;
         cin >> reload;
@@ -368,15 +383,7 @@ int main() {
     } else {
         generateCustomerOrderingList(customerOrderingList, customerList, available);
     }
-    //generating and outputting customer queue
 
-
-
-//    for (int i = 0; i < 10; i++) {
-//        cout << available[i] << " ";
-//    }
-//
-//    cout << endl;
 
     int ingredient1;
     int ingredient2;
@@ -412,54 +419,56 @@ int main() {
 
     } while (points > 0 && points < 10 && quit != "quit");
 
+    string **flexListArray = getFlexList();
+    int num = countLines() / 5;
 
     if (points == 0) {
         cout << "Sorry, you ran out of points. Better luck next time!" << endl;
         delSaveGame();
-        cout << "Here is your list of past customers: " << endl;
-        string **flexListArray = getFlexList();
-        int num = countLines();
+
         cout
                 << "If you'd like to sort your flex list chronologically, enter 1. If you'd like to sort it alphabetically, enter 2."
                 << endl;
         int sortNum;
         cin >> sortNum;
+        cout << "Here is your list of past customers: " << endl;
         if (sortNum == 1) {
             outputResults();
 
         } else if (sortNum == 2) {
             selectSort(flexListArray, num);
-            for (int i = 0; i < num; i++) {
-                for (int j = 0; j < 5; j++) {
-                    cout << flexListArray[i][j] << endl;
-                }
-            }
         }
         delFlexList();
+
+
         //returns the user to the title screen
     } else if (points == 10) {
         cout << "Great job! Your alchemy shop has a stellar reputation. You win!" << endl;
         delSaveGame();
-        cout << "Here is your flex list: " << endl;
-        outputResults();
+        cout
+                << "If you'd like to sort your flex list chronologically, enter 1. If you'd like to sort it alphabetically, enter 2."
+                << endl;
+        int sortNum;
+        cin >> sortNum;
+        cout << "Here is your list of past customers: " << endl;
+        if (sortNum == 1) {
+            outputResults();
+
+        } else if (sortNum == 2) {
+            selectSort(flexListArray, num);
+        }
         delFlexList();
+
         //returns the user to the title screen
     } else {
         cout << "Your game has been saved!" << endl;
     }
 
-
-    //listing potions and ingredients
-    /* cout << "Potions: " << endl;
-    for(int i = 0; i < 10; i++) {
-        cout << potionList[i].toString() << endl;
+    //deallocating each pointing within the pointer array
+    for (int i = 0; i < num; i++) {
+        delete[] flexListArray[i];
     }
-
-    cout << "Base Ingredients: " << endl;
-    for(int i = 0; i < 10; i++) {
-        cout << baseIngredientList[i].toString() << endl;
-    }
-     */
+    delete[] flexListArray; //deallocating the pointer
 
 
     return 0;
