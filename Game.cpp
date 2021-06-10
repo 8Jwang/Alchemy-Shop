@@ -287,10 +287,11 @@ Customer *updateCustomerOrderingList(Customer customerOrderingList[], Customer c
             // after customer leaves, customer becomes available
             available[temp] = temp;
 
-            cout << "A new customer arrived! Here is your customer list: " << endl;
-            for (int i = 0; i < 3; i++) {
-                cout << i << ". " << customerOrderingList[i].toString() << endl;
-            }
+//            cout << "A new customer arrived! Here is your customer list: " << endl;
+//            for (int i = 0; i < 3; i++) {
+//                cout << i << ". " << customerOrderingList[i].toString() << endl;
+//            }
+
 
 //            for (int i = 0; i < 10; i++) {
 //                cout << available[i] << " ";
@@ -479,7 +480,11 @@ int main(int argc, char *argv[]) {
                 points = giveCustomer(myPotion, customer, customerOrderingList, points);
                 if (points != 0 && points != 10) {
                     updateCustomerOrderingList(customerOrderingList, customerList, available);
-                    savingInformation(points, customerOrderingList);
+                    //updating output of customer ordering list with scene
+                    for(int i=0; i<3; i++) {
+                        QGraphicsTextItem *customerText = scene->addText(customerOrderingList[i].toString());
+                        customerText->setPos((i+1)*30, 30);
+                    }
                     cout << "If you would like to quit and save, type 'quit'. Otherwise, enter anything!" << endl;
                     cin >> quit;
                 }
