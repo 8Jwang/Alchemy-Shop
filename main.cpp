@@ -7,6 +7,10 @@
 #include <fstream>
 #include <string>
 #include <string.h>
+#include <QApplication>
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <QGraphicsView>
 
 using namespace std;
 
@@ -187,7 +191,7 @@ string **getFlexList() {
 }
 
 //sorting flex list alphabetically
-string **selectSort(string **arr, int length) {
+void selectSort(string **arr, int length) {
     int pos_max;
     string temp[5];
 
@@ -338,11 +342,28 @@ void delSaveGame() {
     ofs.close();
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+
+    QApplication a(argc, argv);
+    // create a scene
+    QGraphicsScene * scene = new QGraphicsScene();
+
+    // create an item to put into the scene
+    QGraphicsRectItem * rect = new QGraphicsRectItem();
+    rect->setRect(0,0,100,100);
+
+    // add the item to the scene
+    scene->addItem(rect);
+
+    // add a view to visualize the scene
+    QGraphicsView * view = new QGraphicsView(scene);
+
+    view->show();
 
     srand(time(0));
 
     int points = 3;
+
 
     // initializing arrays
     Customer customerList[10];
@@ -359,6 +380,7 @@ int main() {
     int available[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     ifstream read("saveGame.txt");
+
     if (!read) return 0;
     bool empty = read.peek() == EOF;
 
@@ -383,7 +405,7 @@ int main() {
     } else {
         generateCustomerOrderingList(customerOrderingList, customerList, available);
     }
-
+    cout << "hello" << endl;
 
     int ingredient1;
     int ingredient2;
@@ -470,6 +492,6 @@ int main() {
     }
     delete[] flexListArray; //deallocating the pointer
 
-
-    return 0;
+    return a.exec();
+    //return 0;
 }
